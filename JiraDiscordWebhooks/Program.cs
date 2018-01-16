@@ -12,7 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace JiraDiscordWebhooks
+namespace JiraDiscordWebhookConsole
 {
 	public static class StringExtension
 	{
@@ -125,10 +125,10 @@ namespace JiraDiscordWebhooks
 			}
 		}
 
-		// SET THESE HOW YOU WANT
+		// TODO: Change these to match your configuration
 		private static string localIP = "SERVER_LOCAL_IP";
 		private static int port = 8095;
-		private static string jiraIconURL = "http://JIRA_ICON_URL";
+		private static string jiraIconURL = "https://JIRA_ICON_URL";
 		private static string jiraBaseURL = "http://JIRA_BASE_URL/browse/";
 		private static string discordURL = "https://DISCORD_WEBHOOK_URL";
 		private static string botName = "JIRA";
