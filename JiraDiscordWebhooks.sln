@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JiraDiscordWebhookConsole", "JiraDiscordWebhooks\JiraDiscordWebhookConsole.csproj", "{08FB5333-1A74-4362-BFDE-6D7501DC3FC3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JiraDiscordWebhookConsole", "JiraDiscordWebhookConsole\JiraDiscordWebhookConsole.csproj", "{08FB5333-1A74-4362-BFDE-6D7501DC3FC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JiraDiscordWebhookForms", "JiraDiscordWebhookServer\JiraDiscordWebhookForms.csproj", "{156F1B6F-7BF9-48FC-A0CD-D55383F8DFDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JiraDiscordWebhookForms", "JiraDiscordWebhookForms\JiraDiscordWebhookForms.csproj", "{156F1B6F-7BF9-48FC-A0CD-D55383F8DFDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

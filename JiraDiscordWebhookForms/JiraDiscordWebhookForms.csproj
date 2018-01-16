@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>JiraDiscordWebhookServer.Program</StartupObject>
+    <StartupObject>JiraDiscordWebhookForms.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Common.Logging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
@@ -40,9 +40,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NHttp, Version=0.1.9.0, Culture=neutral, PublicKeyToken=156364e4f7b202d9, processorArchitecture=MSIL">
-      <HintPath>..\packages\NHttp.0.1.9.0\lib\net20\NHttp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
