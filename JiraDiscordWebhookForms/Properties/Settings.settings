@@ -1,7 +1,21 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="JiraDiscordWebhookForms.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="LocalIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://SERVER_LOCAL_IP/</Value>
+    </Setting>
+    <Setting Name="JiraIconURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://JIRA_ICON_URL</Value>
+    </Setting>
+    <Setting Name="JiraBaseURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://JIRA_BASE_URL/browse/</Value>
+    </Setting>
+    <Setting Name="DiscordURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://DISCORD_WEBHOOK_URL</Value>
+    </Setting>
+    <Setting Name="BotName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">JIRA</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

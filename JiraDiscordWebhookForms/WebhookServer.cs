@@ -20,60 +20,151 @@ namespace JiraDiscordWebhookForms
 {
 	public partial class WebhookServer : Form
 	{
-		// TODO: Change these to match your configuration
-		private static string localIP = "http://SERVER_LOCAL_IP/";
-		private static string jiraIconURL = "https://JIRA_ICON_URL";
-		private static string jiraBaseURL = "http://JIRA_BASE_URL/browse/";
-		private static string discordURL = "https://DISCORD_WEBHOOK_URL";
-		private static string botName = "JIRA";
+		Prefs prefs = new Prefs();
 
 		public WebhookServer()
 		{
 			InitializeComponent();
-			
+
 			//StartServer();
 		}
 
 		Thread serverThread;
 		private void WebhookServer_Load(object sender, EventArgs e)
 		{
+			prefs = LoadPrefs();
+
+			txt_LocalIP.Text = prefs.LocalIP;
+			txt_JiraIconURL.Text = prefs.JiraIconURL;
+			txt_JiraBaseURL.Text = prefs.JiraBaseURL;
+			txt_DiscordURL.Text = prefs.DiscordURL;
+			txt_BotName.Text = prefs.BotName;
+
 			serverThread = new Thread(StartListening);
 			serverThread.Start();
 		}
-		
+
+		private void WebhookServer_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			Debug.WriteLine("WebhookServer_FormClosing");
+			StopListening();
+		}
+
 		private void btn_Start_Click(object sender, EventArgs e)
 		{
-			//StartServer();
+			Thread.Sleep(200);
+			if (GetServerStatus() == ServerStatus.Running) { return; }
+			serverThread = new Thread(StartListening);
+			serverThread.Start();
 		}
 
 		private void btn_Stop_Click(object sender, EventArgs e)
 		{
-			//StopServer();
+			StopListening();
 		}
 
-		
+		private void btn_SaveSettings_Click(object sender, EventArgs e)
+		{
+			prefs.LocalIP = txt_LocalIP.Text;
+			prefs.JiraIconURL = txt_JiraIconURL.Text;
+			prefs.JiraBaseURL = txt_JiraBaseURL.Text;
+			prefs.DiscordURL = txt_DiscordURL.Text;
+			prefs.BotName = txt_BotName.Text;
+
+			SavePrefs(prefs);
+		}
+
+
+		public void SavePrefs(Prefs savedPrefs)
+		{
+			Properties.Settings.Default.LocalIP = savedPrefs.LocalIP;
+			Properties.Settings.Default.JiraIconURL = savedPrefs.JiraIconURL;
+			Properties.Settings.Default.JiraBaseURL = savedPrefs.JiraBaseURL;
+			Properties.Settings.Default.DiscordURL = savedPrefs.DiscordURL;
+			Properties.Settings.Default.BotName = savedPrefs.BotName;
+
+			Properties.Settings.Default.Save();
+		}
+
+
+		public Prefs LoadPrefs()
+		{
+			Debug.WriteLine("Loading prefs...");
+
+			Prefs newPrefs = new Prefs
+			{
+				LocalIP = Properties.Settings.Default.LocalIP,
+				JiraIconURL = Properties.Settings.Default.JiraIconURL,
+				JiraBaseURL = Properties.Settings.Default.JiraBaseURL,
+				DiscordURL = Properties.Settings.Default.DiscordURL,
+				BotName = Properties.Settings.Default.BotName
+			};
+
+			Debug.WriteLine("LocalIP:     " + newPrefs.LocalIP);
+			Debug.WriteLine("JiraIconURL: " + newPrefs.JiraIconURL);
+			Debug.WriteLine("JiraBaseURL: " + newPrefs.JiraBaseURL);
+			Debug.WriteLine("DiscordURL:  " + newPrefs.DiscordURL);
+			Debug.WriteLine("BotName:     " + newPrefs.BotName);
+
+			return newPrefs;
+		}
+
+
 		private static readonly HttpClient client = new HttpClient();
 
 		private ServerStatus status = ServerStatus.Idle;
 
-		private ServerStatus SetServerStatus(ServerStatus value)
+		private void SetServerStatus(ServerStatus value)
 		{
-			status = value;
-			lbl_StatusValue.Text = status.ToString();
+			SetServerStatus_Proc(value);
+		}
+
+		delegate void SetServerStatusCallback(ServerStatus value);
+
+		private void SetServerStatus_Proc(ServerStatus value)
+		{
+			if (lbl_StatusValue.InvokeRequired)
+			{
+				SetServerStatusCallback cb = new SetServerStatusCallback(SetServerStatus_Proc);
+				BeginInvoke(cb, new object[] { value });
+			}
+			else
+			{
+				status = value;
+				lbl_StatusValue.Text = status.ToString();
+			}
+		}
+
+
+		private ServerStatus GetServerStatus()
+		{
 			return status;
 		}
 
+
 		bool stopListening = false;
 		HttpListener listener;
+
 		public void StartListening()
 		{
+			if (GetServerStatus() == ServerStatus.Running) { return; }
 			Debug.WriteLine("In StartListening");
+
+			SetServerStatus(ServerStatus.Running);
 
 			while (true)
 			{
-				listener = new HttpListener();
-				listener.Prefixes.Add(localIP);
-				listener.Start();
+				try
+				{
+					listener = new HttpListener();
+					listener.Prefixes.Add(prefs.LocalIP);
+					listener.Start();
+				}
+				catch (Exception e)
+				{
+					var msg = e.Message;
+					Trace.WriteLine(msg);
+				}
 
 				Trace.WriteLine("Listening...");
 
@@ -129,7 +220,7 @@ namespace JiraDiscordWebhookForms
 						{
 							author = json.user;
 							authorName = json.user.displayName.Value;
-							//botName = authorName + " (JIRA)";
+							//prefs.BotName = authorName + " (JIRA)";
 						}
 						catch (Exception ex)
 						{
@@ -138,7 +229,7 @@ namespace JiraDiscordWebhookForms
 
 							author = json.comment.author;
 							authorName = json.comment.author.displayName.Value;
-							//botName = authorName + " (JIRA)";
+							//prefs.BotName = authorName + " (JIRA)";
 						}
 						var link = "";
 						var issueKey = "";
@@ -152,7 +243,7 @@ namespace JiraDiscordWebhookForms
 							commentId = json.comment.id.Value;
 
 							issueKey = json.issue.key.Value;
-							link = jiraBaseURL + issueKey + "?focusedCommentId=" + commentId;
+							link = prefs.JiraBaseURL + issueKey + "?focusedCommentId=" + commentId;
 							issueSummary = json.issue.fields.summary.Value;
 							issueDescription = json.issue.fields.description.Value;
 						}
@@ -162,7 +253,7 @@ namespace JiraDiscordWebhookForms
 							Trace.WriteLine(msg);
 
 							issueKey = json.issue.key.Value;
-							link = jiraBaseURL + issueKey;
+							link = prefs.JiraBaseURL + issueKey;
 							issueSummary = json.issue.fields.summary.Value;
 							issueDescription = json.issue.fields.description.Value;
 						}
@@ -199,9 +290,9 @@ namespace JiraDiscordWebhookForms
 
 						Trace.WriteLine("Got webhook event '" + ev + "' [" + issueSummary + "]" + " by " + authorName);
 
-						var discordMessage = new DiscordHookMessage(botName, issueKey, issueSummary, issueDescription, ev, link, authorName, avatarUrl, commentContents, commentId);
+						var discordMessage = new DiscordHookMessage(prefs.JiraIconURL, prefs.BotName, issueKey, issueSummary, issueDescription, ev, link, authorName, avatarUrl, commentContents, commentId);
 						var discordMessageJSON = JsonConvert.SerializeObject(discordMessage, Formatting.Indented);
-						var resp = client.PostAsync(discordURL, new StringContent(discordMessageJSON, Encoding.UTF8, "application/json")).Result;
+						var resp = client.PostAsync(prefs.DiscordURL, new StringContent(discordMessageJSON, Encoding.UTF8, "application/json")).Result;
 						Trace.WriteLine("Discord response code: " + resp.StatusCode);
 					}
 				}
@@ -218,7 +309,11 @@ namespace JiraDiscordWebhookForms
 
 		public void StopListening()
 		{
+			if (GetServerStatus() == ServerStatus.Idle) { return; }
 			Debug.WriteLine("Time to stop listening.");
+
+			SetServerStatus(ServerStatus.Idle);
+			Thread.Sleep(200);
 			listener.Stop();
 			serverThread.Abort();
 		}
@@ -231,6 +326,25 @@ namespace JiraDiscordWebhookForms
 			Idle
 		}
 		
+
+		public class Prefs
+		{
+			public string LocalIP { get; set; }
+			public string JiraIconURL { get; set; }
+			public string JiraBaseURL { get; set; }
+			public string DiscordURL { get; set; }
+			public string BotName { get; set; }
+
+			public Prefs()
+			{
+				LocalIP = Properties.Settings.Default.LocalIP;
+				JiraIconURL = Properties.Settings.Default.JiraIconURL;
+				JiraBaseURL = Properties.Settings.Default.JiraBaseURL;
+				DiscordURL = Properties.Settings.Default.DiscordURL;
+				BotName = Properties.Settings.Default.BotName;
+			}
+		}
+
 
 		// DATA STRUCTURES 
 		
@@ -262,10 +376,10 @@ namespace JiraDiscordWebhookForms
 			public string content { get; set; }
 			public IList<DiscordAttachment> embeds { get; set; }
 
-			public DiscordHookMessage(string discordBotName, string issueKey, string issueSummary, string issueDescription, string eventType, string link, string authorName, string avatarUrl, string commentContents, string commentId)
+			public DiscordHookMessage(string iconUrl, string discordBotName, string issueKey, string issueSummary, string issueDescription, string eventType, string link, string authorName, string avatarUrl, string commentContents, string commentId)
 			{
 				username = discordBotName;
-				avatar_url = jiraIconURL;
+				avatar_url = iconUrl;
 				List<DiscordAttachmentField> embedFields = null;
 
 				if (!eventType.Contains("comment"))
@@ -331,12 +445,6 @@ namespace JiraDiscordWebhookForms
 					}
 				};
 			}
-		}
-
-		private void WebhookServer_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			Debug.WriteLine("WebhookServer_FormClosing");
-			StopListening();
 		}
 	}
 

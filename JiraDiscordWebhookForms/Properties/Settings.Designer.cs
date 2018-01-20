@@ -22,5 +22,65 @@ namespace JiraDiscordWebhookForms.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://SERVER_LOCAL_IP/")]
+        public string LocalIP {
+            get {
+                return ((string)(this["LocalIP"]));
+            }
+            set {
+                this["LocalIP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://JIRA_ICON_URL")]
+        public string JiraIconURL {
+            get {
+                return ((string)(this["JiraIconURL"]));
+            }
+            set {
+                this["JiraIconURL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://JIRA_BASE_URL/browse/")]
+        public string JiraBaseURL {
+            get {
+                return ((string)(this["JiraBaseURL"]));
+            }
+            set {
+                this["JiraBaseURL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://DISCORD_WEBHOOK_URL")]
+        public string DiscordURL {
+            get {
+                return ((string)(this["DiscordURL"]));
+            }
+            set {
+                this["DiscordURL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("JIRA")]
+        public string BotName {
+            get {
+                return ((string)(this["BotName"]));
+            }
+            set {
+                this["BotName"] = value;
+            }
+        }
     }
 }
