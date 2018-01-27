@@ -82,5 +82,41 @@ namespace JiraDiscordWebhookForms.Properties {
                 this["BotName"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://BUG_ICON_URL")]
+        public string BugIconURL {
+            get {
+                return ((string)(this["BugIconURL"]));
+            }
+            set {
+                this["BugIconURL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://TASK_ICON_URL")]
+        public string TaskIconURL {
+            get {
+                return ((string)(this["TaskIconURL"]));
+            }
+            set {
+                this["TaskIconURL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://EPIC_ICON_URL")]
+        public string EpicIconURL {
+            get {
+                return ((string)(this["EpicIconURL"]));
+            }
+            set {
+                this["EpicIconURL"] = value;
+            }
+        }
     }
 }

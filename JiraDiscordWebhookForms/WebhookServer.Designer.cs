@@ -29,13 +29,23 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WebhookServer));
 			this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+			this.trayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.showHideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.startToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.stopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.btn_Start = new System.Windows.Forms.Button();
 			this.btn_Stop = new System.Windows.Forms.Button();
 			this.lbl_StatusName = new System.Windows.Forms.Label();
 			this.lbl_StatusValue = new System.Windows.Forms.Label();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-			this.txt_BotName = new System.Windows.Forms.TextBox();
+			this.label11 = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
+			this.label5 = new System.Windows.Forms.Label();
 			this.txt_DiscordURL = new System.Windows.Forms.TextBox();
 			this.txt_JiraBaseURL = new System.Windows.Forms.TextBox();
 			this.txt_JiraIconURL = new System.Windows.Forms.TextBox();
@@ -45,19 +55,77 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.txt_LocalIP = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
+			this.txt_TaskIconURL = new System.Windows.Forms.TextBox();
+			this.txt_EpicIconURL = new System.Windows.Forms.TextBox();
+			this.txt_BotName = new System.Windows.Forms.TextBox();
+			this.txt_BugIconURL = new System.Windows.Forms.TextBox();
 			this.btn_SaveSettings = new System.Windows.Forms.Button();
+			this.trayContextMenuStrip.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// notifyIcon
 			// 
-			this.notifyIcon.Text = "JIRA Discord Webhook Server";
+			this.notifyIcon.ContextMenuStrip = this.trayContextMenuStrip;
+			this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+			this.notifyIcon.Text = "JIRA Webhook Server: Idle";
 			this.notifyIcon.Visible = true;
+			this.notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
+			// 
+			// trayContextMenuStrip
+			// 
+			this.trayContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showHideToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.startToolStripMenuItem,
+            this.stopToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.quitToolStripMenuItem});
+			this.trayContextMenuStrip.Name = "trayContextMenuStrip";
+			this.trayContextMenuStrip.Size = new System.Drawing.Size(140, 104);
+			// 
+			// showHideToolStripMenuItem
+			// 
+			this.showHideToolStripMenuItem.Name = "showHideToolStripMenuItem";
+			this.showHideToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.showHideToolStripMenuItem.Text = "Show / Hide";
+			this.showHideToolStripMenuItem.Click += new System.EventHandler(this.toggleVisibilityToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(136, 6);
+			// 
+			// startToolStripMenuItem
+			// 
+			this.startToolStripMenuItem.Name = "startToolStripMenuItem";
+			this.startToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.startToolStripMenuItem.Text = "Start";
+			this.startToolStripMenuItem.Click += new System.EventHandler(this.startToolStripMenuItem_Click);
+			// 
+			// stopToolStripMenuItem
+			// 
+			this.stopToolStripMenuItem.Name = "stopToolStripMenuItem";
+			this.stopToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.stopToolStripMenuItem.Text = "Stop";
+			this.stopToolStripMenuItem.Click += new System.EventHandler(this.stopToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator1
+			// 
+			this.toolStripSeparator1.Name = "toolStripSeparator1";
+			this.toolStripSeparator1.Size = new System.Drawing.Size(136, 6);
+			// 
+			// quitToolStripMenuItem
+			// 
+			this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+			this.quitToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+			this.quitToolStripMenuItem.Text = "Quit";
+			this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
 			// 
 			// btn_Start
 			// 
 			this.btn_Start.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.btn_Start.Location = new System.Drawing.Point(12, 171);
+			this.btn_Start.Location = new System.Drawing.Point(12, 274);
 			this.btn_Start.Name = "btn_Start";
 			this.btn_Start.Size = new System.Drawing.Size(100, 23);
 			this.btn_Start.TabIndex = 0;
@@ -68,7 +136,7 @@
 			// btn_Stop
 			// 
 			this.btn_Stop.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.btn_Stop.Location = new System.Drawing.Point(118, 171);
+			this.btn_Stop.Location = new System.Drawing.Point(118, 274);
 			this.btn_Stop.Name = "btn_Stop";
 			this.btn_Stop.Size = new System.Drawing.Size(100, 23);
 			this.btn_Stop.TabIndex = 1;
@@ -105,7 +173,9 @@
 			this.tableLayoutPanel1.ColumnCount = 2;
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Controls.Add(this.txt_BotName, 1, 5);
+			this.tableLayoutPanel1.Controls.Add(this.label11, 0, 8);
+			this.tableLayoutPanel1.Controls.Add(this.label9, 0, 7);
+			this.tableLayoutPanel1.Controls.Add(this.label5, 0, 6);
 			this.tableLayoutPanel1.Controls.Add(this.lbl_StatusValue, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.txt_DiscordURL, 1, 4);
 			this.tableLayoutPanel1.Controls.Add(this.lbl_StatusName, 0, 0);
@@ -117,25 +187,55 @@
 			this.tableLayoutPanel1.Controls.Add(this.label2, 0, 2);
 			this.tableLayoutPanel1.Controls.Add(this.txt_LocalIP, 1, 1);
 			this.tableLayoutPanel1.Controls.Add(this.label1, 0, 1);
+			this.tableLayoutPanel1.Controls.Add(this.txt_TaskIconURL, 1, 7);
+			this.tableLayoutPanel1.Controls.Add(this.txt_EpicIconURL, 1, 8);
+			this.tableLayoutPanel1.Controls.Add(this.txt_BotName, 1, 5);
+			this.tableLayoutPanel1.Controls.Add(this.txt_BugIconURL, 1, 6);
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 6;
+			this.tableLayoutPanel1.RowCount = 9;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(434, 150);
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(434, 225);
 			this.tableLayoutPanel1.TabIndex = 4;
 			// 
-			// txt_BotName
+			// label11
 			// 
-			this.txt_BotName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-			this.txt_BotName.Location = new System.Drawing.Point(133, 128);
-			this.txt_BotName.Name = "txt_BotName";
-			this.txt_BotName.Size = new System.Drawing.Size(298, 20);
-			this.txt_BotName.TabIndex = 12;
+			this.label11.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(47, 206);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(80, 13);
+			this.label11.TabIndex = 18;
+			this.label11.Text = "Epic Icon URL:";
+			// 
+			// label9
+			// 
+			this.label9.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(44, 181);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(83, 13);
+			this.label9.TabIndex = 16;
+			this.label9.Text = "Task Icon URL:";
+			// 
+			// label5
+			// 
+			this.label5.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.label5.AutoSize = true;
+			this.label5.Location = new System.Drawing.Point(49, 156);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(78, 13);
+			this.label5.TabIndex = 14;
+			this.label5.Text = "Bug Icon URL:";
 			// 
 			// txt_DiscordURL
 			// 
@@ -219,10 +319,42 @@
 			this.label1.TabIndex = 1;
 			this.label1.Text = "Local IP:";
 			// 
+			// txt_TaskIconURL
+			// 
+			this.txt_TaskIconURL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.txt_TaskIconURL.Location = new System.Drawing.Point(133, 178);
+			this.txt_TaskIconURL.Name = "txt_TaskIconURL";
+			this.txt_TaskIconURL.Size = new System.Drawing.Size(298, 20);
+			this.txt_TaskIconURL.TabIndex = 20;
+			// 
+			// txt_EpicIconURL
+			// 
+			this.txt_EpicIconURL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.txt_EpicIconURL.Location = new System.Drawing.Point(133, 203);
+			this.txt_EpicIconURL.Name = "txt_EpicIconURL";
+			this.txt_EpicIconURL.Size = new System.Drawing.Size(298, 20);
+			this.txt_EpicIconURL.TabIndex = 21;
+			// 
+			// txt_BotName
+			// 
+			this.txt_BotName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.txt_BotName.Location = new System.Drawing.Point(133, 128);
+			this.txt_BotName.Name = "txt_BotName";
+			this.txt_BotName.Size = new System.Drawing.Size(298, 20);
+			this.txt_BotName.TabIndex = 12;
+			// 
+			// txt_BugIconURL
+			// 
+			this.txt_BugIconURL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+			this.txt_BugIconURL.Location = new System.Drawing.Point(133, 153);
+			this.txt_BugIconURL.Name = "txt_BugIconURL";
+			this.txt_BugIconURL.Size = new System.Drawing.Size(298, 20);
+			this.txt_BugIconURL.TabIndex = 19;
+			// 
 			// btn_SaveSettings
 			// 
-			this.btn_SaveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.btn_SaveSettings.Location = new System.Drawing.Point(346, 171);
+			this.btn_SaveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btn_SaveSettings.Location = new System.Drawing.Point(346, 274);
 			this.btn_SaveSettings.Name = "btn_SaveSettings";
 			this.btn_SaveSettings.Size = new System.Drawing.Size(100, 23);
 			this.btn_SaveSettings.TabIndex = 5;
@@ -234,18 +366,21 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(461, 206);
+			this.ClientSize = new System.Drawing.Size(461, 309);
 			this.Controls.Add(this.btn_SaveSettings);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Controls.Add(this.btn_Stop);
 			this.Controls.Add(this.btn_Start);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "WebhookServer";
-			this.ShowIcon = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-			this.Text = "Webhook Server";
+			this.Text = "JIRA Webhook Server";
+			this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WebhookServer_FormClosing);
 			this.Load += new System.EventHandler(this.WebhookServer_Load);
+			this.Resize += new System.EventHandler(this.WebhookServer_Resize);
+			this.trayContextMenuStrip.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
 			this.ResumeLayout(false);
@@ -272,6 +407,19 @@
 		private System.Windows.Forms.TextBox txt_JiraBaseURL;
 		private System.Windows.Forms.TextBox txt_JiraIconURL;
 		private System.Windows.Forms.Button btn_SaveSettings;
+		private System.Windows.Forms.ContextMenuStrip trayContextMenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem startToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem stopToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+		private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showHideToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.TextBox txt_TaskIconURL;
+		private System.Windows.Forms.TextBox txt_EpicIconURL;
+		private System.Windows.Forms.TextBox txt_BugIconURL;
 	}
 }
 

@@ -17,5 +17,14 @@
     <Setting Name="BotName" Type="System.String" Scope="User">
       <Value Profile="(Default)">JIRA</Value>
     </Setting>
+    <Setting Name="BugIconURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://BUG_ICON_URL</Value>
+    </Setting>
+    <Setting Name="TaskIconURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://TASK_ICON_URL</Value>
+    </Setting>
+    <Setting Name="EpicIconURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://EPIC_ICON_URL</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
